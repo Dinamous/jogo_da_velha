@@ -7,3 +7,109 @@ body{
     background-color: rgb(244, 242, 240);
     
 }
+
+*,*::after,*::before{
+    box-sizing: border-box;
+}
+
+
+
+/* criando variaveis de css */
+:root{
+    --tamanho-quadro:120px;
+    --tamanho-icone: calc(var( --tamanho-quadro) *.9);
+}
+
+/* ================================== */
+
+/* criando o tabuleiro pro jogo */
+.tabuleiro{
+    margin-left: 25%;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    /* centralizando os icones dentro do quadro */
+    justify-items: center;
+    align-items: center;
+    /* criando o templete de 3x3 */
+    grid-template-columns: repeat(3,auto);
+}
+
+.quadro{
+    width: var(--tamanho-quadro);
+    height: var(--tamanho-quadro);
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* apagando as linhas dos quadros */
+.quadro:first-child,
+.quadro:nth-child(2),
+.quadro:nth-child(3){
+    border-top: none;
+}
+
+.quadro:nth-child(1),
+.quadro:nth-child(4),
+.quadro:nth-child(7){
+    border-left: none;
+}
+.quadro:nth-child(3),
+.quadro:nth-child(6),
+.quadro:nth-child(9){
+    border-right: none;
+}
+
+.quadro:nth-child(7),
+.quadro:nth-child(8),
+.quadro:nth-child(9){
+    border-bottom: none;
+}
+/* ========================================== */
+
+/* criando o X */
+.quadro.x::before,
+.quadro.x::after{
+  content: '';
+  position: absolute;
+  width: calc(var(--tamanho-icone) * .15);
+  height: var(--tamanho-icone);
+  background-color: rgb(37, 37, 37);
+}
+
+.quadro.x::before{
+    transform: rotate(45deg);
+}
+
+.quadro.x::after{
+    transform: rotate(-45deg);
+}
+/* =========================================== */
+
+/* criando o O */
+.quadro.o::before,
+.quadro.o::after{
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+.quadro.o:before{
+  width: var(--tamanho-icone) ;
+  height: var(--tamanho-icone) ;
+  background-color: rgb(37, 37, 37);
+}
+
+.quadro.o:after{
+    width: calc(var(--tamanho-icone) * .7) ;
+    height:  calc(var(--tamanho-icone) * .7);
+    background-color: rgb(255, 255, 255);
+  }
+
+
+/* =========================================== */
