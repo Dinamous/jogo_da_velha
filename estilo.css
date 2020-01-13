@@ -45,6 +45,7 @@ body{
     justify-content: center;
     align-items: center;
     position: relative;
+    cursor: pointer;
 }
 
 /* apagando as linhas dos quadros */
@@ -72,40 +73,64 @@ body{
 }
 /* ========================================== */
 
+/* definindo a cor padrão */
+.quadro.x::before,
+.quadro.x::after,
+.quadro.o::before{
+    background-color: rgb(37, 37, 37);
+}
+
+/* mostrar de quem é a vez */
+.tabuleiro.x .quadro:not(.x):not(.o):hover::before, 
+.tabuleiro.x .quadro:not(.x):not(.o):hover::after,
+.tabuleiro.o .quadro:not(.x):not(.o):hover::before{
+    background-color: lightgrey;
+}
+/* ================================ */
+
+
 /* criando o X */
 .quadro.x::before,
-.quadro.x::after{
+.quadro.x::after,
+.tabuleiro.x .quadro:not(.x):not(.o):hover::before, /* sere pra mostrar  amarca d'agua de onde será o lugar da jogada */
+.tabuleiro.x .quadro:not(.x):not(.o):hover::after{  /* o not serve para que não se possa sobrepor um quadro */
   content: '';
   position: absolute;
   width: calc(var(--tamanho-icone) * .15);
   height: var(--tamanho-icone);
-  background-color: rgb(37, 37, 37);
+ 
 }
 
-.quadro.x::before{
+.quadro.x::before,
+.tabuleiro.x .quadro:not(.x):not(.o):hover::before{
     transform: rotate(45deg);
 }
 
-.quadro.x::after{
+.quadro.x::after,
+.tabuleiro.x .quadro:not(.x):not(.o):hover::after{
     transform: rotate(-45deg);
 }
 /* =========================================== */
 
 /* criando o O */
 .quadro.o::before,
-.quadro.o::after{
+.quadro.o::after,
+.tabuleiro.o .quadro:not(.x):not(.o):hover::before,
+.tabuleiro.o .quadro:not(.x):not(.o):hover::after{
   content: '';
   position: absolute;
   border-radius: 50%;
 }
 
-.quadro.o:before{
+.quadro.o::before,
+.tabuleiro.o .quadro:not(.x):not(.o):hover::before{
   width: var(--tamanho-icone) ;
   height: var(--tamanho-icone) ;
-  background-color: rgb(37, 37, 37);
+  
 }
 
-.quadro.o:after{
+.quadro.o::after,
+.tabuleiro.o .quadro:not(.x):not(.o):hover::after{
     width: calc(var(--tamanho-icone) * .7) ;
     height:  calc(var(--tamanho-icone) * .7);
     background-color: rgb(255, 255, 255);
@@ -113,3 +138,49 @@ body{
 
 
 /* =========================================== */
+
+/* caso o quadro já esteja ocupado */
+.quadro.x,
+.quadro.o{
+    cursor: not-allowed;
+}
+
+/* customizando a tela de restart */
+
+.mensagem_fim{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(37, 37, 37, .9);
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 5rem;
+    flex-direction: column;
+}
+
+.mensagem_fim button{
+    font-size: 3rem;
+    background: white;
+    border: 1px solid rgb(37, 37, 37);
+    padding: .25em .5em;
+    cursor: pointer;
+}
+
+.mensagem_fim button:hover{
+    background-color: rgb(37, 37, 37);
+    border-color: white;
+    color:white;
+}
+
+.mensagem_fim.show{
+    display: flex;
+}
+
+
+
+
+
