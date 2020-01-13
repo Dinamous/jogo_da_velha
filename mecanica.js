@@ -4,8 +4,10 @@ const CLASSE_O = 'o'
 
 const elementoQuadro = document.querySelectorAll('[data-quadro]')
 const tabuleiro = document.getElementById('tabuleiro')
-const mensagemVitoria = document.getElementById('mensagemVencedor')
-const mensagemVitoria = document.querySelector('[mensagem-vencedor]')
+const divVitoria = document.getElementById('MensagemVitoria')
+const mensagemVitoria = document.querySelector('[ mensagem-de-vitoria]')
+const botao = document.getElementById('botaoRestart')
+
 let vezO
 const possibilidades_de_vencer = [
     [0,1,2],
@@ -21,15 +23,22 @@ const possibilidades_de_vencer = [
 //iniciando o jogo
 ComecaJogo()
 
+botao.addEventListener('click',ComecaJogo)
 
 function ComecaJogo(){
-    //vezO = false
+    vezO = false
 
     // um quadro só pode ser clicado uma unica vez
     elementoQuadro.forEach(quadro =>{
+        //removendo classes toda vez q reiniciar
+        quadro.classList.remove(CLASSE_O) 
+        quadro.classList.remove(CLASSE_X)
+        quadro.removeEventListener('click',foiClicado)
         quadro.addEventListener('click',foiClicado, {once:true}) 
     })
     CriaHover()
+
+    divVitoria.classList.remove('show')
 }
 
 function foiClicado(e){
@@ -41,15 +50,20 @@ const jogadorAtual = vezO ? CLASSE_O : CLASSE_X // revezamento de jogadores
 
     //checar vitoria
     if(ChecaVitoria(jogadorAtual)){
-      // FimDeJogo(false)
-    }
+        FimDeJogo(false)
+
     //checar empate
+    }else if(Empatou()){
+        FimDeJogo(true)
+    }else{
 
-    //muda jogador
-    TrocaJogador()
+        //muda jogador
+        TrocaJogador()
 
-    //mostra a posição do jogador a ser jogada
-    CriaHover()
+        //mostra a posição do jogador a ser jogada
+        CriaHover()
+    }
+
 }
 
 function  MostraSimbolo(celula,jogadorAtual){
@@ -57,7 +71,7 @@ function  MostraSimbolo(celula,jogadorAtual){
 }
 
 function TrocaJogador(){
-    vezO = !vezO
+    vezO = !vezO //invertedo o jogador
     
 }
 
@@ -83,11 +97,17 @@ function ChecaVitoria(jogadorAtual){
     })
 }
 
-// function FimDeJogo(empate){
-//     if(empate){
+function FimDeJogo(empate){
+    if(empate){
+        mensagemVitoria.innerText = 'Empate!'
+    }else{
+        mensagemVitoria.innerText = `${vezO ? ' O ' : ' X '}Ganhou!` // dependendo do ultimo jogado
+    }
+    divVitoria.classList.add('show')
+}
 
-//     }else{
-//         mensagemVitoria.innerText = `${vezO ? ' O ' : ' X '}Ganhou!`
-//     }
-//     mensagemVitoria.classList.add('show')
-// }
+function Empatou(){
+    return [...elementoQuadro].every(celula =>{ // se todas as celulas possuem uma classe, destruturando o elementoquadro em um array pra checar todas as células
+        return celula.classList.contains(CLASSE_X) || celula.classList.contains(CLASSE_O)
+    })
+}
